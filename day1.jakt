@@ -1,0 +1,37 @@
+import utils
+
+function get_highest_calorie_total(calorie_totals: [u32]) {
+    utils::bubble_sort_numerical_array(calorie_totals)
+    return calorie_totals.last()
+}
+
+function get_sum_of_three_highest_calorie_totals(calorie_totals: [u32]) {
+    utils::bubble_sort_numerical_array(calorie_totals)
+
+    let three_highest_totals = calorie_totals[(calorie_totals.size() - 3)..]
+    mut sum = 0u32
+    for total in three_highest_totals {
+        sum += total
+    }
+
+    return sum
+}
+
+function main() {
+    mut file = File::open_for_reading("inputs/day1")
+    let lines = utils::read_all_lines_from_file(&mut file)
+
+    mut calorie_totals: [u32] = []
+    mut current_total = 0u32
+    for line in lines {
+        if line.is_empty() {
+            calorie_totals.push(current_total)
+            current_total = 0
+        } else {
+            current_total += line.to_uint()!
+        }
+    }
+
+    println("Highest calorie total: {}", get_highest_calorie_total(calorie_totals))
+    println("Sum of three highest calorite totals: {}", get_sum_of_three_highest_calorie_totals(calorie_totals))
+}
